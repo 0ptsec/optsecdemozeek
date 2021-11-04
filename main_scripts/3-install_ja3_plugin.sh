@@ -2,20 +2,20 @@
 
 echo -e "$(tput setaf 3)$(tput bold)===============================Running install_ja3_plugin.sh=================================$(tput sgr0)\n"
 
-local_path=/usr/share/bro/site/
+local_path=/opt/zeek/share/zeek/site/
 
 sudo mkdir -p $local_path/ja3/
 
-for one_file in __load__.bro intel_ja3.bro ja3.bro ja3s.bro ; do
+for one_file in __load__.zeek intel_ja3.zeek ja3.zeek ja3s.zeek ; do
         if [ ! -e $local_path/ja3/$one_file ]; then
-                sudo curl -sSL "https://raw.githubusercontent.com/salesforce/ja3/cb29184df7949743c64fcb190c902dfe72523e38/bro/$one_file" -o "$local_path/ja3/$one_file"
+                sudo curl -sSL "https://raw.githubusercontent.com/salesforce/ja3/master/zeek/$one_file" -o "$local_path/ja3/$one_file"
         fi
 done
 
-if ! grep -q '^[^#]*@load \./ja3' $local_path/local.bro ; then
-        echo '' | sudo tee -a $local_path/local.bro
-        echo '#Load ja3 support libraries' | sudo tee -a $local_path/local.bro
-        echo '@load ./ja3' | sudo tee -a $local_path/local.bro
+if ! grep -q '^[^#]*@load \./ja3' $local_path/local.zeek ; then
+        echo '' | sudo tee -a $local_path/local.zeek
+        echo '#Load ja3 support libraries' | sudo tee -a $local_path/local.zeek
+        echo '@load ./ja3' | sudo tee -a $local_path/local.zeek
 fi
 
 echo -e "$(tput setaf 3)$(tput bold)=====================done======================$(tput sgr0)\n"

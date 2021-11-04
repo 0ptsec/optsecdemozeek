@@ -5,7 +5,7 @@
 
 # This is a complete standalone configuration.  Most likely you will
 # only need to change the interface.
-#[bro]
+#[zeek]
 #type=standalone
 #host=localhost
 #interface=eth0

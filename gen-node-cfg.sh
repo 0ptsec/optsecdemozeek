@@ -117,7 +117,7 @@ echo 'that any interfaces you would like to use for packet capture must be up'
 echo 'and configured before you continue.  When the interfaces are ready,'
 echo 'please return to this terminal.'
 echo
-echo 'Would you like to continue running the Bro configuration script? '
+echo 'Would you like to continue running the Zeek configuration script? '
 echo 'You might answer no if you know you have already created a working'
 echo 'node.cfg and do not wish to replace it.  Otherwise we recommend'
 echo 'continuing with this script.'
@@ -133,8 +133,8 @@ fi
 
 require_file /proc/cpuinfo				|| fail "Missing /proc/cpuinfo ; is this a Linux system? "
 require_util awk cp date egrep grep mv sed tr ip wc	|| fail "A needed tool is missing"
-if [ ! -d /usr/local/bro/etc/ -a ! -d /opt/bro/etc/ ]; then
-	fail "Missing bro configuration dir /opt/bro/etc/ or /usr/local/bro/etc "
+if [! -d /opt/zeek/etc/ ]; then
+	fail "Missing zeek configuration dir /opt/zeek/etc/"
 fi
 echo Continuing, all requirements met
 
@@ -150,12 +150,10 @@ require_file "$this_script_path/node.cfg-template"	|| fail "There is no node.cfg
 #	shift
 #done
 
-if [ -d /usr/local/bro/etc/ ]; then
-	bro_node_cfg='/usr/local/bro/etc/node.cfg'
-elif [ -d /opt/bro/etc/ ]; then
-	bro_node_cfg='/opt/bro/etc/node.cfg'
+if [ -d /opt/zeek/etc/ ]; then
+	zeek_node_cfg='/opt/zeek/etc/node.cfg'
 else
-	fail "Unable to find bro configuration file node.cfg in either /usr/local/bro/etc/ or /opt/bro/etc/ "
+	fail "Unable to find zeek configuration file node.cfg in /opt/zeek/etc/ "
 fi
 
 Now=`/bin/date +%Y%m%d%H%M%S`
@@ -186,7 +184,7 @@ echo ; echo
 node_configuration_block=''
 node_count=0
 if [ $approved_if_count -eq 0 ]; then
-	echo "This configuration has no sniff interfaces, so bro will not be able to run.  Exiting bro configuration script."
+	echo "This configuration has no sniff interfaces, so zeek will not be able to run.  Exiting zeek configuration script."
 	exit 1
 else
 	cores_per_if=$[ ( $avail_cores - 2 ) / $approved_if_count ]
@@ -201,21 +199,21 @@ for one_if in $approved_ifs ; do
 
 done
 
-if [ -e "$bro_node_cfg" ]; then
-	cp -p "$bro_node_cfg" "$bro_node_cfg.$Now"
-	echo "A backup has been made for the existing $bro_node_cfg ."
+if [ -e "$zeek_node_cfg" ]; then
+	cp -p "$zeek_node_cfg" "$zeek_node_cfg.$Now"
+	echo "A backup has been made for the existing $zeek_node_cfg ."
 else
-	echo "$bro_node_cfg does not exist, creating one from scratch."
+	echo "$zeek_node_cfg does not exist, creating one from scratch."
 fi
 
 
-cat "$this_script_path/node.cfg-template" | sed -e 's/@@InterfaceConfig@@/'"$node_configuration_block"'/' >"${bro_node_cfg}.tmp"
+cat "$this_script_path/node.cfg-template" | sed -e 's/@@InterfaceConfig@@/'"$node_configuration_block"'/' >"${zeek_node_cfg}.tmp"
 echo "Here is the proposed new node.cfg:"
-cat "$bro_node_cfg.tmp"
+cat "$zeek_node_cfg.tmp"
 echo
 echo -n "Would you like to replace the existing node.cfg with the above file"
 if askYN ; then
-	mv "${bro_node_cfg}.tmp" "$bro_node_cfg"
+	mv "${zeek_node_cfg}.tmp" "$zeek_node_cfg"
 else
 	echo "No change has been made to node.cfg."
 fi

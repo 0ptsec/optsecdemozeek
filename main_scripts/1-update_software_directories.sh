@@ -13,23 +13,27 @@ HWD=$(pwd)
 
 echo -e "$(tput setaf 3)$(tput bold)=========================Updating System and installing packages=====================================$(tput sgr0)\n"
 
+echo 'deb http://download.opensuse.org/repositories/security:/zeek/Raspbian_10/ /' | sudo tee /etc/apt/sources.list.d/security:zeek.list
+curl -fsSL https://download.opensuse.org/repositories/security:zeek/Raspbian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
+sudo apt update
+sudo apt install zeek
+
 sudo apt-get update
 sudo apt-get -y full-upgrade
-sudo apt-get install -y rpi-eeprom rpi-eeprom-images apg lshw bro broctl bro-aux i2c-tools python3-pil python3-pip rsync screen tcpdump uhubctl
+sudo apt-get install -y rpi-eeprom rpi-eeprom-images apg lshw i2c-tools python3-pil python3-pip rsync screen tcpdump uhubctl
 
 echo -e "$(tput setaf 3)$(tput bold)=========================done - Packages installed=====================================$(tput sgr0)\n"
 
-sudo apt list rpi-eeprom rpi-eeprom-images apg lshw bro broctl bro-aux i2c-tools python3-pil python3-pip rsync screen tcpdump uhubctl | sudo tee "$HWD/software_installed.txt"
+sudo apt list rpi-eeprom rpi-eeprom-images apg lshw zeek i2c-tools python3-pil python3-pip rsync screen tcpdump uhubctl | sudo tee "$HWD/software_installed.txt"
 
 
 echo -e "$(tput setaf 3)$(tput bold)=========================Creating directory structure=====================================$(tput sgr0)\n"
-sudo mkdir -p /opt/bro/logs/ /opt/bro/pcaps/ /opt/bro/passerlogs
-cd /opt/bro
-sudo ln -sf /etc/bro/ etc
+sudo mkdir -p /opt/pcaps/ /opt/passerlogs
+
 
 echo -e "$(tput setaf 3)$(tput bold)=========================done - directories created=====================================$(tput sgr0)\n"
 
-ls -lah /opt/bro "$@"
+ls -lah /opt "$@"
 
 cd $HWD
 
@@ -37,7 +41,7 @@ cd $HWD
 echo "$(tput setaf 3)$(tput bold)=====================done======================$(tput sgr0)"
 read -n 1 -s -r -p "$(tput setaf 3)$(tput bold)Press any key to continue to script 2 or ctrl+c to cancel.$(tput sgr0)"
 
-SCRIPT_PATH="$(pwd)/2-configure_bro.sh"
+SCRIPT_PATH="$(pwd)/2-configure_zeek.sh"
 echo "THE PATH IS SET TO $SCRIPT_PATH"
 if [ ! -f $SCRIPT_PATH ]
 then
