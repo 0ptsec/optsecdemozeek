@@ -1,4 +1,4 @@
-# optsecdemo
+# optsecdemozeek
 scripts associated with the sensor webinar
 
 You can download the github repository directly onto the raspberry pi or to another location and copy or paste commands as you go.
