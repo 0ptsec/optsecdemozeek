@@ -12,7 +12,7 @@ echo -e "\n"
 #Configure node.cfg
 sudo /usr/local/bin/gen-node-cfg.sh
 #node.cfg change cores from 2 to 3
-sudo sed -i.bak -e 's@^lb_procs.*@lb_procs=3@' /optt/zeek/etc/node.cfg
+sudo sed -i.bak -e 's@^lb_procs.*@lb_procs=3@' /opt/zeek/etc/node.cfg
 
 sudo sed -i.bak2 -e 's@^lb_method.*@lb_method=pf_ring\npin_cpus=1,2,3@' /opt/zeek/etc/node.cfg
 
