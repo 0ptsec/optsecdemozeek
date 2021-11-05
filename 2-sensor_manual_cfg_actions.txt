@@ -43,10 +43,10 @@ rm -f /tmp/internet_live /var/toshow/[0-9][0-9]*.txt}
 #ethtool command to reduce processing at eth0
 ethtool -K eth0 gro off lro off rx off tx off gso off
 
-mkdir -p /opt/bro/pcaps
-screen -S capture -t capture -d -m bash -c "nice -n 15 tcpdump -i eth0 -G 3600 -w '/opt/bro/pcaps/'`hostname -s`'.%Y%m%d%H%M%S.pcap' -z bzip2 '((tcp[13] & 0x17 != 0x10) or not tcp) and (port 53 or not ((src net 10.0.0.0/8 or src net 172.16.0.0/12 or src net 192.168.0.0/16 or src net 169.254.0.0/16) and (dst net 10.0.0.0/8 or dst net 172.16.0.0/12 or dst net 192.168.0.0/16 or dst net 169.254.0.0/16)) )'"
 
-/usr/bin/broctl deploy
+screen -S capture -t capture -d -m bash -c "nice -n 15 tcpdump -i eth0 -G 3600 -w '/opt/pcaps/'`hostname -s`'.%Y%m%d%H%M%S.pcap' -z bzip2 '((tcp[13] & 0x17 != 0x10) or not tcp) and (port 53 or not ((src net 10.0.0.0/8 or src net 172.16.0.0/12 or src net 192.168.0.0/16 or src net 169.254.0.0/16) and (dst net 10.0.0.0/8 or dst net 172.16.0.0/12 or dst net 192.168.0.0/16 or dst net 169.254.0.0/16)) )'"
+
+/opt/zeek/bin/zeekctl deploy
 
 
 
