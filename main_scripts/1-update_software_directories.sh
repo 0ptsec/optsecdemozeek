@@ -13,8 +13,13 @@ HWD=$(pwd)
 
 echo -e "$(tput setaf 3)$(tput bold)=========================Updating System and installing packages=====================================$(tput sgr0)\n"
 
-echo 'deb http://download.opensuse.org/repositories/security:/zeek/Raspbian_10/ /' | sudo tee /etc/apt/sources.list.d/security:zeek.list
-curl -fsSL https://download.opensuse.org/repositories/security:zeek/Raspbian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
+# Use for Rasbian OS 11
+echo 'deb http://download.opensuse.org/repositories/security:/zeek/Raspbian_11/ /' | sudo tee /etc/apt/sources.list.d/security:zeek.list
+curl -fsSL https://download.opensuse.org/repositories/security:zeek/Raspbian_11/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
+
+# Use for Raspian OS 10
+#echo 'deb http://download.opensuse.org/repositories/security:/zeek/Raspbian_10/ /' | sudo tee /etc/apt/sources.list.d/security:zeek.list
+#curl -fsSL https://download.opensuse.org/repositories/security:zeek/Raspbian_10/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
 sudo apt update
 sudo apt install zeek
 
