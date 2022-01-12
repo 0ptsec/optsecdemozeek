@@ -9,7 +9,7 @@ sudo pip install -r requirements.txt
 #Prevent Scapy from performing DNS lookups
 echo 'noenum = [ Resolve(), TCP_SERVICES, UDP_SERVICES ]' >> ~/.scapy_startup.py
 #Then run the following to run passer in a background process with a niceness of 10 with timestamps.
-sudo nice -n 10 ./passer.py -i eth0 -l /opt/bro/passerlogs/passercap.txt --timestamp & #make sure to document the process id so you can kill it if nessesary.
+sudo nice -n 10 ./passer.py -i eth0 -l /opt/passerlogs/passercap.txt --timestamp & #make sure to document the process id so you can kill it if nessesary.
 
 #Install and configure Tripwire, you will be asked to configure a passphrase twice, all pasphrases are generated and saved in the corresponding device auth.txt file.
 sudo apt-get install tripwire
